@@ -3,6 +3,12 @@ let btn = document.querySelector(".add")
 let wrapper = document.querySelector(".cards")
 let dlt  = document.querySelector(".dlt")
 
+let prevScroll = 0;
+let left= 200;
+let tp = 60;
+let prevLine = document.querySelector("#cardOne");
+let num =2;
+
 const lenis = new Lenis({
   duration: 1.2,
   easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // https://www.desmos.com/calculator/brs54l4xou
@@ -15,32 +21,6 @@ const lenis = new Lenis({
   infinite: false,
   wrapper:window,
   content:document.body
-})
-
-let prevScroll = 0;
-lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
-  if(scroll > prevScroll+500){
-    addCard()
-    prevScroll = scroll
-  }
-  if(scroll < prevScroll-500){
-    removeCard()
-    prevScroll = scroll
-  }
-
-})
-
-let left= 200;
-let tp = 60;
-let prev = document.querySelector("#cardOne");
-let num =2;
-
-btn.addEventListener("click",()=>{
-  addCard()
-})
-
-dlt.addEventListener("click",()=>{
-  removeCard()
 })
 
 function raf(time) {
@@ -60,9 +40,9 @@ function addCard (){
   div.style.top = `${tp}px`;
   wrapper.appendChild(div);
   setTimeout(() => {
-    console.log(prev.childNodes[3])
-    prev.childNodes[3].style.filter = "blur(8px)";
-    prev = div;
+    console.log(prevLine.childNodes[3])
+    prevLine.childNodes[3].style.filter = "blur(8px)";
+    prevLine = div;
   }, 1700);
   num++
   left += 100;
@@ -77,10 +57,10 @@ function removeCard() {
   console.log(cards.childNodes)
   setTimeout(() => {
     if(len <= 7){
-      prev =  cards.childNodes[1]
+      prevLine =  cards.childNodes[1]
       cards.childNodes[1].childNodes[3].style.filter = "none";
     }else{
-      prev =  cards.childNodes[len-1]
+      prevLine =  cards.childNodes[len-1]
       cards.childNodes[len-1].childNodes[3].style.filter = "none";
     }
     
@@ -90,3 +70,27 @@ function removeCard() {
   left -= 100;
   tp -= 10;
 }
+
+
+
+lenis.on('scroll', ({ scroll, limit, velocity, direction, progress }) => {
+  if(scroll > prevScroll+500){
+    addCard()
+    prevScroll = scroll
+  }
+  if(scroll < prevScroll-500){
+    removeCard()
+    prevScroll = scroll
+  }
+
+})
+
+
+btn.addEventListener("click",()=>{
+  addCard()
+})
+
+dlt.addEventListener("click",()=>{
+  removeCard()
+})
+
