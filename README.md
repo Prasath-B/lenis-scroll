@@ -8,3 +8,5 @@ Project requirements :
            
 Tech stack used :
           HTML5,CSS3,Vanilla Javascript.
+          
+Project Demo : https://lenis-scroll.netlify.app/
